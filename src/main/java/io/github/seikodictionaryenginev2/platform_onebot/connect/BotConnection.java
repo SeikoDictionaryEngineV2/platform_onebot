@@ -38,6 +38,7 @@ public class BotConnection extends WebSocketClient {
     public void onMessage(String message) {
         APIResponse.UnknownTypeAPIResponse response = JSON.parseObject(message, APIResponse.UnknownTypeAPIResponse.class);
         if (response.getEcho() != null) {
+            System.out.println("[Client]:recv->" + message);
             //响应Echo
             latchMap.get(response.getEcho()).release(response);
             return;
@@ -74,7 +75,9 @@ public class BotConnection extends WebSocketClient {
     public APIResponse.UnknownTypeAPIResponse sendMessageBlocking(APIRequest<?> request) throws InterruptedException {
         BlockingLock<APIResponse.UnknownTypeAPIResponse> lock = new BlockingLock<>();
         latchMap.put(request.getEcho(), lock);
-        sendMessage(request);
+        String packet = JSON.toJSONString(request);
+        System.out.println("[Client]:send->" + packet);
+        send(packet);
         lock.await();
         return latchMap.remove(request.getEcho()).getData();
     }
