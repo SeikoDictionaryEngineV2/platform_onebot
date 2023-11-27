@@ -12,6 +12,7 @@ public class MessageList extends ArrayList<SingleMessage> {
 
     @Override
     public boolean add(SingleMessage origin) {
+        //这里的转码会破坏原有消息结构
         SingleMessage transfer = switch (origin.getType()) {
             case "text" -> origin.to(SingleMessage.PlainText.class);
             case "face", "mface" -> origin.to(SingleMessage.Face.class); //小emoji为数字，大emoji为md5
@@ -29,6 +30,7 @@ public class MessageList extends ArrayList<SingleMessage> {
         return stream().map(SingleMessage::contentToString).collect(Collectors.joining());
     }
 
+    //上面的add方法会破坏原有消息结构，因此这里要重新转回去
     public MessageList transferToSend() {
         MessageList l = new MessageList();
         l.addAll(

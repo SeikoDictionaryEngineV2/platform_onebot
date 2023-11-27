@@ -5,6 +5,7 @@ import io.github.seikodictionaryenginev2.base.entity.DictionaryProject;
 import io.github.seikodictionaryenginev2.base.env.DICList;
 import io.github.seikodictionaryenginev2.platform_onebot.bean.GroupMember;
 import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.GroupMessageRuntime;
+import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.PrivateMessageRuntime;
 import io.github.seikodictionaryenginev2.platform_onebot.event.EventSource;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.MessageEvent;
 import io.github.seikodictionaryenginev2.platform_onebot.utils.BlockingLock;
@@ -16,6 +17,8 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @Description
@@ -36,26 +39,38 @@ public class BotConnection extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        APIResponse.UnknownTypeAPIResponse response = JSON.parseObject(message, APIResponse.UnknownTypeAPIResponse.class);
-        if (response.getEcho() != null) {
-            System.out.println("[Client]:recv->" + message);
-            //响应Echo
-            latchMap.get(response.getEcho()).release(response);
-            return;
-        }
-        //响应event
-        EventSource source = new EventSource(message);
-        if (source.getEventType() == EventSource.Type.message) {
-            System.out.println("[Client]:recv->" + source);
-            if (source.transfer(MessageEvent.class).getMessage_type().equals("group")) {
-                MessageEvent.GroupMessageEvent event = source.transfer(MessageEvent.GroupMessageEvent.class);
-
-                DICList.INSTANCE.subFiles().forEach((v) -> {
-                    GroupMessageRuntime runtime = new GroupMessageRuntime(v, event, this);
-                    runtime.invoke(event.getMessage().contentToString());
-                });
+        CompletableFuture.runAsync(() -> {
+            APIResponse.UnknownTypeAPIResponse response = JSON.parseObject(message, APIResponse.UnknownTypeAPIResponse.class);
+            if (response.getEcho() != null) {
+                System.out.println("[Client]:recv->" + message);
+                //响应Echo
+                latchMap.get(response.getEcho()).release(response);
+                return;
             }
-        }
+            //响应event
+            EventSource source = new EventSource(message);
+            if (source.getEventType() == EventSource.Type.message) {
+                System.out.println("[Client]:recv->" + source);
+
+                switch (source.transfer(MessageEvent.class).getMessage_type()) {
+                    case "group":
+                        MessageEvent.GroupMessageEvent event = source.transfer(MessageEvent.GroupMessageEvent.class);
+
+                        DICList.INSTANCE.subFiles().forEach((v) -> {
+                            GroupMessageRuntime runtime = new GroupMessageRuntime(v, event, this);
+                            runtime.invoke(event.getMessage().contentToString());
+                        });
+                        break;
+                    case "private":
+                        MessageEvent.PrivateMessageEvent event1 = source.transfer(MessageEvent.PrivateMessageEvent.class);
+                        DICList.INSTANCE.subFiles().forEach((v) -> {
+                            PrivateMessageRuntime runtime = new PrivateMessageRuntime(v, event1, this);
+                            runtime.invoke(event1.getMessage().contentToString());
+                        });
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -79,6 +94,18 @@ public class BotConnection extends WebSocketClient {
         System.out.println("[Client]:send->" + packet);
         send(packet);
         lock.await();
+        return latchMap.remove(request.getEcho()).getData();
+    }
+
+    public APIResponse.UnknownTypeAPIResponse sendMessageBlocking(APIRequest<?> request, int time, TimeUnit unit) throws InterruptedException, TimeoutException {
+        BlockingLock<APIResponse.UnknownTypeAPIResponse> lock = new BlockingLock<>();
+        latchMap.put(request.getEcho(), lock);
+        String packet = JSON.toJSONString(request);
+        System.out.println("[Client]:send->" + packet);
+        send(packet);
+        if (!lock.await(time, unit)) {
+            throw new TimeoutException();
+        }
         return latchMap.remove(request.getEcho()).getData();
     }
 

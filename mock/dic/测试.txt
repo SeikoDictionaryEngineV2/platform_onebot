@@ -1,4 +1,11 @@
 #Seiko词库V2
 
 [群]ABC
-你好!!!
+DATA<-///
+{
+    "group_id": 572360632,
+    "message": "你好啊\n---来自SeikoDICV2的跨群发送",
+}
+///
+K<-$OneBot发包 send_group_msg {DATA}$
+{K}

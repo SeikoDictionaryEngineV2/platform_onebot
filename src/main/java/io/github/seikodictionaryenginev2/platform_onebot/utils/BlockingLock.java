@@ -29,8 +29,8 @@ public class BlockingLock<T> {
         latch.await();
     }
 
-    public void await(int time, TimeUnit unit) throws InterruptedException {
-        latch.await(time,unit);
+    public boolean await(int time, TimeUnit unit) throws InterruptedException {
+        return latch.await(time,unit);
     }
 
 }
