@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Optional;
 
@@ -22,6 +23,11 @@ import java.util.Optional;
 @Data
 public class EventSource {
     private JSONObject origin;
+
+    @Override
+    public String toString() {
+        return origin.toString();
+    }
 
     public EventSource(String source) {
         this.origin = JSON.parseObject(source);

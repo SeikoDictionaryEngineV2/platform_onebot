@@ -1,7 +1,8 @@
 package io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
-import io.github.seikodictionaryenginev2.platform_onebot.message.notice.GroupFile;
+import io.github.seikodictionaryenginev2.platform_onebot.bean.RemoteFile;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,6 +17,7 @@ public class NoticeEvent extends BasicEvent {
 
     private String notice_type;
 
+    //好友添加事件
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class FriendAddEvent extends NoticeEvent {
@@ -27,6 +29,7 @@ public class NoticeEvent extends BasicEvent {
         }
     }
 
+    //好友消息撤回事件
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class FriendMessageRecallEvent extends NoticeEvent {
@@ -39,12 +42,64 @@ public class NoticeEvent extends BasicEvent {
         }
     }
 
+    //私聊文件上传事件
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class PrivateFileUploadEvent extends GroupNoticeEvent {
+        private RemoteFile private_file;
+
+        @Override
+        public void setNotice_type(String notice_type) {
+            super.setNotice_type(notice_type);
+            assertRightNoticeType("private_upload");
+        }
+    }
+
+    //群消息提示事件
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class GroupNoticeEvent extends NoticeEvent {
         private long group_id;
         private long user_id;
 
+        //群消息设精事件
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        public static class GroupMessageEssenceEvent extends GroupNoticeEvent {
+            @JSONField(name = "sender_id")
+            private long user_id;
+            private long operator_id;
+            private long message_id;
+            private String sub_type;
+
+            @Override
+            public void setNotice_type(String notice_type) {
+                super.setNotice_type(notice_type);
+                assertRightNoticeType("essence");
+            }
+
+            //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
+        }
+
+        //群成员名片被修改
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        public static class GroupMemberNameCardModifiedEvent extends GroupNoticeEvent {
+//            card_new	string	新名片
+//            card_old	string	旧名片
+            private String card_new;
+            private String card_old;
+
+            @Override
+            public void setNotice_type(String notice_type) {
+                super.setNotice_type(notice_type);
+                assertRightNoticeType("group_card");
+            }
+
+            //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
+        }
+
+        //群消息撤回事件
         @Data
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMessageRecallEvent extends GroupNoticeEvent {
@@ -60,6 +115,7 @@ public class NoticeEvent extends BasicEvent {
             //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
         }
 
+        //群禁言事件
         @Data
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberBannedEvent extends GroupNoticeEvent {
@@ -80,6 +136,7 @@ public class NoticeEvent extends BasicEvent {
             //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
         }
 
+        //群成员入群事件
         @Data
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberEnterEvent extends GroupNoticeEvent {
@@ -99,6 +156,7 @@ public class NoticeEvent extends BasicEvent {
             //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
         }
 
+        //群成员退群事件
         @Data
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberLeaveEvent extends GroupNoticeEvent {
@@ -117,10 +175,11 @@ public class NoticeEvent extends BasicEvent {
             //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
         }
 
+        //群成员文件上传事件
         @EqualsAndHashCode(callSuper = true)
         @Data
         public static class GroupFileUploadEvent extends GroupNoticeEvent {
-            private GroupFile file;
+            private RemoteFile file;
 
             @Override
             public void setNotice_type(String notice_type) {
@@ -129,6 +188,7 @@ public class NoticeEvent extends BasicEvent {
             }
         }
 
+        //管理员改动事件
         @EqualsAndHashCode(callSuper = true)
         @Data
         public static class GroupAdminModifiedEvent extends GroupNoticeEvent {

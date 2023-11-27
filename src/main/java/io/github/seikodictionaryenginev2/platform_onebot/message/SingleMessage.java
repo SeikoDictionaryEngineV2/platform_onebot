@@ -16,8 +16,31 @@ public class SingleMessage {
     private String type;
     private JSONObject data;
 
-    public void setData(JSONObject data) {
-        this.data = data;
+    public String contentToString() {
+        return "";
+    }
+
+    public JSONObject writeData() {
+        return data;
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class QuoteReply extends SingleMessage {
+        private String id;
+
+        @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("id", id);
+            }};
+        }
+
+        @Override
+        public void setType(String type) {
+            super.setType(type);
+            assertTypeRight("reply");
+        }
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -25,10 +48,28 @@ public class SingleMessage {
     public static class PlainText extends SingleMessage {
         private String text;
 
+        public PlainText(String str) {
+            setType("text");
+            this.text = str;
+        }
+
+        @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("text", text);
+            }};
+        }
+
+
         @Override
         public void setType(String type) {
             super.setType(type);
             assertTypeRight("text");
+        }
+
+        @Override
+        public String contentToString() {
+            return text;
         }
     }
 
@@ -38,9 +79,22 @@ public class SingleMessage {
         private String id;
 
         @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("id", id);
+            }};
+        }
+
+
+        @Override
         public void setType(String type) {
             super.setType(type);
-            assertTypeRight("face");
+            assertTypeRight("face", "mface");
+        }
+
+        @Override
+        public String contentToString() {
+            return String.format("[表情:%s]", id);
         }
     }
 
@@ -51,9 +105,23 @@ public class SingleMessage {
         private String url;
 
         @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("file", file);
+                put("url", url);
+            }};
+        }
+
+
+        @Override
         public void setType(String type) {
             super.setType(type);
             assertTypeRight("image");
+        }
+
+        @Override
+        public String contentToString() {
+            return "[图片]";
         }
     }
 
@@ -63,9 +131,22 @@ public class SingleMessage {
         private String file;
 
         @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("file", file);
+            }};
+        }
+
+
+        @Override
         public void setType(String type) {
             super.setType(type);
             assertTypeRight("record");
+        }
+
+        @Override
+        public String contentToString() {
+            return "[语音]";
         }
     }
 
@@ -75,9 +156,21 @@ public class SingleMessage {
         private String file;
 
         @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("file", file);
+            }};
+        }
+
+        @Override
         public void setType(String type) {
             super.setType(type);
             assertTypeRight("video");
+        }
+
+        @Override
+        public String contentToString() {
+            return "[视频]";
         }
     }
 
@@ -87,20 +180,36 @@ public class SingleMessage {
         private String qq;
 
         @Override
+        public JSONObject writeData() {
+            return new JSONObject() {{
+                put("qq", qq);
+            }};
+        }
+
+        @Override
         public void setType(String type) {
             super.setType(type);
             assertTypeRight("at");
         }
+
+        @Override
+        public String contentToString() {
+            return "@" + qq + " ";
+        }
     }
 
     public <T extends SingleMessage> T to(Class<T> t) {
+        if (this.getData() == null) {
+            return (T) this;
+        }
         T m = data.to(t);
         m.setType(getType());
         m.setData(getData());
         return m;
     }
 
-    protected void assertTypeRight(String expert) {
-        FieldUtil.assertFieldRightType(this,"type",expert);
+
+    protected void assertTypeRight(String... expert) {
+        FieldUtil.assertFieldRightType(this, "type", expert);
     }
 }

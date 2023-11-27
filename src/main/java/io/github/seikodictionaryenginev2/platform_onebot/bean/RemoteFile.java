@@ -1,4 +1,4 @@
-package io.github.seikodictionaryenginev2.platform_onebot.message.notice;
+package io.github.seikodictionaryenginev2.platform_onebot.bean;
 
 import lombok.Data;
 
@@ -12,9 +12,10 @@ import lombok.Data;
  * @Date 2023/11/27 上午10:56
  */
 @Data
-public class GroupFile {
+public class RemoteFile {
     private String id;
     private String name;
     private long number;
     private long busid;
+    private String url;
 }

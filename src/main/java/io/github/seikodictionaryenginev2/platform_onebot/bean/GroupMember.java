@@ -1,4 +1,4 @@
-package io.github.seikodictionaryenginev2.platform_onebot.bean.impl;
+package io.github.seikodictionaryenginev2.platform_onebot.bean;
 
 import io.github.seikodictionaryenginev2.platform_onebot.bean.Sender;
 import lombok.Data;

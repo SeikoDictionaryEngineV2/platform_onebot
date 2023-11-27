@@ -1,6 +1,7 @@
 package io.github.seikodictionaryenginev2.platform_onebot.utils;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  * @Description
@@ -8,7 +9,7 @@ import java.lang.reflect.Field;
  * @Date 2023/11/27 上午10:19
  */
 public class FieldUtil {
-    public static void assertFieldRightType(Object object,String name, String expert) {
+    public static void assertFieldRightType(Object object,String name, String... expert) {
         Class<?> event = object.getClass();
 
         do {
@@ -22,10 +23,11 @@ public class FieldUtil {
             f.setAccessible(true);
             Object rtn;
             try {
-                if ((rtn = f.get(object)).equals(expert)) {
+                rtn = f.get(object);
+                if (Arrays.binarySearch(expert,rtn) != -1) {
                     return;
                 }
-                throw new IllegalStateException(event.getName() + "must required " + name + ":" + expert + ", but this event is:" + rtn);
+                throw new IllegalStateException(event.getName() + "must required " + name + ":" + Arrays.toString(expert) + ", but this event is:" + rtn);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }

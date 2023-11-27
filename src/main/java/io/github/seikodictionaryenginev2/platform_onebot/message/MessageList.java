@@ -1,6 +1,7 @@
 package io.github.seikodictionaryenginev2.platform_onebot.message;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -13,15 +14,31 @@ public class MessageList extends ArrayList<SingleMessage> {
     public boolean add(SingleMessage origin) {
         SingleMessage transfer = switch (origin.getType()) {
             case "text" -> origin.to(SingleMessage.PlainText.class);
-            case "face" -> origin.to(SingleMessage.Face.class);
+            case "face", "mface" -> origin.to(SingleMessage.Face.class); //小emoji为数字，大emoji为md5
             case "image" -> origin.to(SingleMessage.Image.class);
             case "record" -> origin.to(SingleMessage.Record.class);
             case "video" -> origin.to(SingleMessage.Video.class);
             case "at" -> origin.to(SingleMessage.At.class);
+            case "reply" -> origin.to(SingleMessage.QuoteReply.class);
             default -> throw new IllegalStateException("Unexpected value: " + origin.getType());
         };
-
-
         return super.add(transfer);
+    }
+
+    public String contentToString() {
+        return stream().map(SingleMessage::contentToString).collect(Collectors.joining());
+    }
+
+    public MessageList transferToSend() {
+        MessageList l = new MessageList();
+        l.addAll(
+                stream().map((v) -> {
+                    SingleMessage m = new SingleMessage();
+                    m.setType(v.getType());
+                    m.setData(v.writeData());
+                    return m;
+                }).collect(Collectors.toList())
+        );
+        return l;
     }
 }
