@@ -1,11 +1,11 @@
-package io.github.seikodictionaryenginev2.platform_onebot.dic.runtime;
+package io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.seikodictionaryenginev2.base.entity.DictionaryFile;
 import io.github.seikodictionaryenginev2.platform_onebot.bean.Group;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.APIRequest;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.BotConnection;
+import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.OneBotMessageRuntime;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.MessageEvent;
 import io.github.seikodictionaryenginev2.platform_onebot.message.MessageList;
 
@@ -14,7 +14,7 @@ import io.github.seikodictionaryenginev2.platform_onebot.message.MessageList;
  * @Author kagg886
  * @Date 2023/11/27 下午6:09
  */
-public class GroupMessageRuntime extends OneBotRuntime<MessageEvent.GroupMessageEvent, Group> {
+public class GroupMessageRuntime extends OneBotMessageRuntime<MessageEvent.GroupMessageEvent, Group> {
     public GroupMessageRuntime(DictionaryFile file, MessageEvent.GroupMessageEvent event, BotConnection conn) {
         super(file, event, conn);
     }

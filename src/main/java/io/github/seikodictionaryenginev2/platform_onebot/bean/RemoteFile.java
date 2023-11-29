@@ -1,6 +1,8 @@
 package io.github.seikodictionaryenginev2.platform_onebot.bean;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -11,7 +13,8 @@ import lombok.Data;
  * @Author kagg886
  * @Date 2023/11/27 上午10:56
  */
-@Data
+@Getter
+@Setter
 public class RemoteFile {
     private String id;
     private String name;

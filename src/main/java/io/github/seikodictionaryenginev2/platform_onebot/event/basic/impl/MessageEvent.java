@@ -6,6 +6,8 @@ import io.github.seikodictionaryenginev2.platform_onebot.bean.Sender;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -13,7 +15,8 @@ import lombok.EqualsAndHashCode;
  * @Date 2023/11/26 下午10:03
  */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 public class MessageEvent extends BasicEvent {
     private String message_type;
     private String sub_type;
@@ -31,11 +34,12 @@ public class MessageEvent extends BasicEvent {
     }
 
     protected void assertRightMessageType(String expert) {
-        assertFieldRightType("message_type",expert);
+        assertFieldRightType("message_type", expert);
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+    @Setter
     public static class GroupMessageEvent extends MessageEvent {
         private long group_id;
         private Object anonymous;
@@ -45,17 +49,18 @@ public class MessageEvent extends BasicEvent {
         @Override
         public void setMessage_type(String message_type) {
             super.setMessage_type(message_type);
-            assertFieldRightType("message_type","group");
+            assertFieldRightType("message_type", "group");
         }
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+    @Setter
     public static class PrivateMessageEvent extends MessageEvent {
         @Override
         public void setMessage_type(String message_type) {
             super.setMessage_type(message_type);
-            assertFieldRightType("message_type","private");
+            assertFieldRightType("message_type", "private");
         }
     }
 }

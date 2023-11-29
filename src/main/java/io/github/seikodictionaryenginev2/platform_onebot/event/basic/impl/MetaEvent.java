@@ -3,6 +3,8 @@ package io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -31,7 +33,8 @@ import lombok.EqualsAndHashCode;
 //status	object	-	状态信息
 //interval	number (int64)	-	到下次心跳的间隔，单位毫秒
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 public class MetaEvent extends BasicEvent {
     private String meta_event_type;
     private String sub_type;

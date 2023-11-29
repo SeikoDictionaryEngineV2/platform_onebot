@@ -1,7 +1,9 @@
 package io.github.seikodictionaryenginev2.platform_onebot.bean;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
  * @Author kagg886
  * @Date 2023/11/29 上午11:18
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Group {
     private long group_id;

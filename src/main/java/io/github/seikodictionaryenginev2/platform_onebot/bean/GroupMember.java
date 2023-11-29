@@ -3,6 +3,8 @@ package io.github.seikodictionaryenginev2.platform_onebot.bean;
 import io.github.seikodictionaryenginev2.platform_onebot.bean.Sender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -10,7 +12,8 @@ import lombok.EqualsAndHashCode;
  * @Date 2023/11/27 上午10:37
  */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 public class GroupMember extends Sender {
     private String card;
     private String area;

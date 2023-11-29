@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Optional;
@@ -20,7 +22,8 @@ import java.util.Optional;
  * @Author kagg886
  * @Date 2023/11/26 下午9:57
  */
-@Data
+@Getter
+@Setter
 public class EventSource {
     private JSONObject origin;
 

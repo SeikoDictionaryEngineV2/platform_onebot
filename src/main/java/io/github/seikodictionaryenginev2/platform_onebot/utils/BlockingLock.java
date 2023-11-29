@@ -1,7 +1,9 @@
 package io.github.seikodictionaryenginev2.platform_onebot.utils;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

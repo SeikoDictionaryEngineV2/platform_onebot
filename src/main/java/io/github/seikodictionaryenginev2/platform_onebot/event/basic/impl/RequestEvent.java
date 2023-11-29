@@ -3,6 +3,8 @@ package io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -10,7 +12,8 @@ import lombok.EqualsAndHashCode;
  * @Date 2023/11/26 下午10:03
  */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 public class RequestEvent extends BasicEvent {
     private RequestType request_type;
 
@@ -19,7 +22,8 @@ public class RequestEvent extends BasicEvent {
     private String flag;
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class FriendRequestEvent extends RequestEvent {
 
     }
@@ -29,7 +33,8 @@ public class RequestEvent extends BasicEvent {
     //comment	string	-	验证信息
     //flag	string	-	请求 flag，在调用处理请求的 API 时需要传入
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class GroupMemberRequestEvent extends RequestEvent {
         private JoinType sub_type;
         private long group_id;

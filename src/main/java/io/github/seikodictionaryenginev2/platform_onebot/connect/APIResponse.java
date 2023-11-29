@@ -1,10 +1,7 @@
 package io.github.seikodictionaryenginev2.platform_onebot.connect;
 
 import com.alibaba.fastjson2.JSON;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @Description
@@ -17,7 +14,8 @@ import lombok.NoArgsConstructor;
 //    "data": null,
 //    "echo": "123"
 //}
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class APIResponse<T> {
@@ -27,7 +25,8 @@ public class APIResponse<T> {
     private String echo;
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+    @Setter
     @AllArgsConstructor
     public static class UnknownTypeAPIResponse extends APIResponse<Object> {
         public <R> APIResponse<R> to(Class<R> response) {

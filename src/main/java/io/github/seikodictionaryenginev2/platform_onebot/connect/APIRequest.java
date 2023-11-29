@@ -2,6 +2,8 @@ package io.github.seikodictionaryenginev2.platform_onebot.connect;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -18,7 +20,8 @@ import java.util.UUID;
 //    },
 //    "echo": "123"
 //}
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class APIRequest<T> {
     private String action;

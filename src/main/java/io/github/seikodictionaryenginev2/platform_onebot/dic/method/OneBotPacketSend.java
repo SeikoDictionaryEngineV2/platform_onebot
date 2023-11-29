@@ -8,7 +8,7 @@ import io.github.seikodictionaryenginev2.base.session.BasicRuntime;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.APIRequest;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.APIResponse;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.BotConnection;
-import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.OneBotRuntime;
+import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.OneBotMessageRuntime;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Method;
@@ -39,7 +39,7 @@ public class OneBotPacketSend extends Function implements SendMessageWhenPostExe
             runtime = (BasicRuntime<?, ?, ?>) m.invoke(r);
         }
 
-        conn = ((OneBotRuntime<?, ?>) runtime).getConn();
+        conn = ((OneBotMessageRuntime<?, ?>) runtime).getConn();
 
         APIResponse<Object> resp = conn.sendMessageBlocking(APIRequest.newRequest(args.get(0).toString(), args.get(1)), 10, TimeUnit.SECONDS);
         return JSON.parseObject(JSON.toJSONString(resp));

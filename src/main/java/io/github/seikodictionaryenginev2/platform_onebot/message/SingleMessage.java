@@ -5,6 +5,8 @@ import com.alibaba.fastjson2.JSONObject;
 import io.github.seikodictionaryenginev2.platform_onebot.utils.FieldUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -25,7 +27,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class QuoteReply extends SingleMessage {
         private String id;
 
@@ -44,7 +47,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class PlainText extends SingleMessage {
         private String text;
 
@@ -74,7 +78,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class Face extends SingleMessage {
         private String id;
 
@@ -99,7 +104,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class Image extends SingleMessage {
         private String file;
         private String url;
@@ -126,7 +132,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class Record extends SingleMessage {
         private String file;
 
@@ -151,7 +158,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class Video extends SingleMessage {
         private String file;
 
@@ -175,7 +183,8 @@ public class SingleMessage {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @Data
+    @Getter
+@Setter
     public static class At extends SingleMessage {
         private String qq;
 
