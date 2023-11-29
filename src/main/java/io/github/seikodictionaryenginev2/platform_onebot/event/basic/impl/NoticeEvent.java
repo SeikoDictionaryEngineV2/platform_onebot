@@ -22,14 +22,14 @@ public class NoticeEvent extends BasicEvent {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class PrivateNoticeEvent extends NoticeEvent {
         private long user_id;
 
         //好友添加事件
         @EqualsAndHashCode(callSuper = true)
         @Getter
-@Setter
+        @Setter
         public static class FriendAddEvent extends PrivateNoticeEvent {
             @Override
             public void setNotice_type(String notice_type) {
@@ -41,10 +41,11 @@ public class NoticeEvent extends BasicEvent {
         //好友消息撤回事件
         @EqualsAndHashCode(callSuper = true)
         @Getter
-@Setter
+        @Setter
         public static class FriendMessageRecallEvent extends NoticeEvent {
             private long operator_id;
             private long message_id;
+
             @Override
             public void setNotice_type(String notice_type) {
                 super.setNotice_type(notice_type);
@@ -55,7 +56,7 @@ public class NoticeEvent extends BasicEvent {
         //私聊文件上传事件
         @EqualsAndHashCode(callSuper = true)
         @Getter
-@Setter
+        @Setter
         public static class PrivateFileUploadEvent extends PrivateNoticeEvent {
             private RemoteFile private_file;
 
@@ -70,14 +71,14 @@ public class NoticeEvent extends BasicEvent {
     //群消息提示事件
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class GroupNoticeEvent extends NoticeEvent {
         private long group_id;
         private long user_id;
 
         //群消息设精事件
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMessageEssenceEvent extends GroupNoticeEvent {
             @JSONField(name = "sender_id")
@@ -97,10 +98,10 @@ public class NoticeEvent extends BasicEvent {
 
         //群成员名片被修改
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberNameCardModifiedEvent extends GroupNoticeEvent {
-//            card_new	string	新名片
+            //            card_new	string	新名片
 //            card_old	string	旧名片
             private String card_new;
             private String card_old;
@@ -116,7 +117,7 @@ public class NoticeEvent extends BasicEvent {
 
         //群消息撤回事件
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMessageRecallEvent extends GroupNoticeEvent {
             private long operator_id;
@@ -133,7 +134,7 @@ public class NoticeEvent extends BasicEvent {
 
         //群禁言事件
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberBannedEvent extends GroupNoticeEvent {
             private SubType sub_type;
@@ -141,7 +142,7 @@ public class NoticeEvent extends BasicEvent {
             private long duration;
 
             public enum SubType {
-                ban,lift_ban
+                ban, lift_ban
             }
 
             @Override
@@ -155,14 +156,14 @@ public class NoticeEvent extends BasicEvent {
 
         //群成员入群事件
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberEnterEvent extends GroupNoticeEvent {
             private SubType sub_type;
             private long operator_id;
 
             public enum SubType {
-                approve,invite
+                approve, invite
             }
 
             @Override
@@ -176,7 +177,7 @@ public class NoticeEvent extends BasicEvent {
 
         //群成员退群事件
         @Getter
-@Setter
+        @Setter
         @EqualsAndHashCode(callSuper = true)
         public static class GroupMemberLeaveEvent extends GroupNoticeEvent {
             private SubType sub_type;
@@ -197,7 +198,7 @@ public class NoticeEvent extends BasicEvent {
         //群成员文件上传事件
         @EqualsAndHashCode(callSuper = true)
         @Getter
-@Setter
+        @Setter
         public static class GroupFileUploadEvent extends GroupNoticeEvent {
             private RemoteFile file;
 
@@ -211,7 +212,7 @@ public class NoticeEvent extends BasicEvent {
         //管理员改动事件
         @EqualsAndHashCode(callSuper = true)
         @Getter
-@Setter
+        @Setter
         public static class GroupAdminModifiedEvent extends GroupNoticeEvent {
             private SetType type;
 
