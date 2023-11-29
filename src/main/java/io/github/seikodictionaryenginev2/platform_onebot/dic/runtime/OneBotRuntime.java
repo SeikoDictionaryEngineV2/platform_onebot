@@ -17,7 +17,7 @@ import lombok.Getter;
  * @Date 2023/11/27 下午10:17
  */
 @Getter
-public abstract class OneBotRuntime<Event extends MessageEvent, Contact extends Sender> extends BasicRuntime<Event, Contact, MessageList> {
+public abstract class OneBotRuntime<Event extends MessageEvent, Contact> extends BasicRuntime<Event, Contact, MessageList> {
     private final BotConnection conn;
 
     public OneBotRuntime(DictionaryFile file, Event event, BotConnection conn) {
@@ -29,6 +29,9 @@ public abstract class OneBotRuntime<Event extends MessageEvent, Contact extends 
     protected void initObject(String command, Event event) {
         super.initObject(command, event);
         getRuntimeObject().put("上下文",event);
+        getRuntimeObject().put("BOT",event.getSelf_id());
+        getRuntimeObject().put("QQ", event.getSender().getUser_id());
+        getRuntimeObject().put("昵称", event.getSender().getNickname());
     }
 
     @Override

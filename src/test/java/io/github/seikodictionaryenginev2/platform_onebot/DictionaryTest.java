@@ -3,11 +3,13 @@ package io.github.seikodictionaryenginev2.platform_onebot;
 import io.github.seikodictionaryenginev2.base.env.DICList;
 import io.github.seikodictionaryenginev2.base.env.DictionaryEnvironment;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.BotConnection;
+import org.java_websocket.enums.ReadyState;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description
@@ -33,10 +35,10 @@ public class DictionaryTest {
             }
         });
 
-        BotConnection connection = new BotConnection(URI.create("ws://192.168.1.19:5800/"));
+        BotConnection connection = new BotConnection(URI.create("ws://192.168.1.18:5800/"));
         connection.connectBlocking();
         System.out.println("Connect Success!" + connection.isOpen());
-        while (!connection.isFlushAndClose());
+        TimeUnit.SECONDS.sleep(60);
         System.out.println("Connect Closed");
     }
 }
