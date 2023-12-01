@@ -8,6 +8,7 @@ import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.Messag
 import io.github.seikodictionaryenginev2.platform_onebot.message.MessageList;
 import io.github.seikodictionaryenginev2.platform_onebot.message.SingleMessage;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description
@@ -15,6 +16,7 @@ import lombok.Getter;
  * @Date 2023/11/27 下午10:17
  */
 @Getter
+@Setter
 public abstract class OneBotMessageRuntime<Event extends MessageEvent, Contact> extends BasicRuntime<Event, Contact, MessageList> {
     private final BotConnection conn;
 

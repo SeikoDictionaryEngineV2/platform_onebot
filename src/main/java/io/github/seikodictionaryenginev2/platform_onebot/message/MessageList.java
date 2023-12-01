@@ -21,6 +21,7 @@ public class MessageList extends ArrayList<SingleMessage> {
             case "video" -> origin.to(SingleMessage.Video.class);
             case "at" -> origin.to(SingleMessage.At.class);
             case "reply" -> origin.to(SingleMessage.QuoteReply.class);
+            case "file" -> origin.to(SingleMessage.RemoteFile.class);
             default -> throw new IllegalStateException("Unexpected value: " + origin.getType());
         };
         return super.add(transfer);

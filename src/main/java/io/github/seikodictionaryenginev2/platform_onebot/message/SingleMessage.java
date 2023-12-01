@@ -26,9 +26,24 @@ public class SingleMessage {
         return data;
     }
 
+    @Getter
+    @Setter
+    @EqualsAndHashCode(callSuper = true)
+    public static class RemoteFile extends SingleMessage {
+        private String id;
+        private String name;
+        private String url;
+
+        @Override
+        public String contentToString() {
+            return "[文件]:"+name;
+        }
+    }
+
+
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class QuoteReply extends SingleMessage {
         private String id;
 
@@ -48,7 +63,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class PlainText extends SingleMessage {
         private String text;
 
@@ -79,7 +94,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class Face extends SingleMessage {
         private String id;
 
@@ -105,7 +120,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class Image extends SingleMessage {
         private String file;
         private String url;
@@ -133,7 +148,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class Record extends SingleMessage {
         private String file;
 
@@ -159,7 +174,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class Video extends SingleMessage {
         private String file;
 
@@ -184,7 +199,7 @@ public class SingleMessage {
 
     @EqualsAndHashCode(callSuper = true)
     @Getter
-@Setter
+    @Setter
     public static class At extends SingleMessage {
         private String qq;
 

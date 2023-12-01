@@ -3,6 +3,7 @@ package io.github.seikodictionaryenginev2.platform_onebot;
 import io.github.seikodictionaryenginev2.base.env.DICList;
 import io.github.seikodictionaryenginev2.base.env.DictionaryEnvironment;
 import io.github.seikodictionaryenginev2.platform_onebot.connect.BotConnection;
+import io.github.seikodictionaryenginev2.platform_onebot.connect.ConnectionManager;
 import org.java_websocket.enums.ReadyState;
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +36,10 @@ public class DictionaryTest {
             }
         });
 
-        BotConnection connection = new BotConnection(URI.create("ws://192.168.1.18:5800/"));
-        connection.connectBlocking();
+        BotConnection connection = ConnectionManager.getInstance().register("ws://192.168.1.10:5800/");
         System.out.println("Connect Success!" + connection.isOpen());
+        Thread.sleep(5000);
+        connection.close();
         TimeUnit.SECONDS.sleep(60);
         System.out.println("Connect Closed");
     }

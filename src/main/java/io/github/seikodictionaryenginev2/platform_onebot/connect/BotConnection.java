@@ -10,11 +10,14 @@ import io.github.seikodictionaryenginev2.platform_onebot.event.EventSource;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.MessageEvent;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.NoticeEvent;
 import io.github.seikodictionaryenginev2.platform_onebot.utils.BlockingLock;
+import lombok.Getter;
+import lombok.Setter;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -29,8 +32,20 @@ import java.util.function.Supplier;
 public class BotConnection extends WebSocketClient {
     private final Map<String, BlockingLock<APIResponse.UnknownTypeAPIResponse>> latchMap = new ConcurrentHashMap<>();
 
-    public BotConnection(URI serverUri) {
+    @Getter
+    private final String uuid;
+
+    @Getter
+    @Setter
+    private boolean retry = true;
+
+    protected BotConnection(URI serverUri) {
+        this(serverUri,UUID.randomUUID().toString());
+    }
+
+    protected BotConnection(URI serverUri,String uuid) {
         super(serverUri);
+        this.uuid = uuid;
     }
 
     @Override
@@ -81,8 +96,6 @@ public class BotConnection extends WebSocketClient {
                             new Object[]{"群成员减少", true, NoticeEvent.GroupNoticeEvent.GroupMemberLeaveEvent.class};
                     case "group_admin" ->
                             new Object[]{"群管理变动", true, NoticeEvent.GroupNoticeEvent.GroupAdminModifiedEvent.class};
-                    case "group_upload" ->
-                            new Object[]{"群文件上传", true, NoticeEvent.GroupNoticeEvent.GroupFileUploadEvent.class};
                     case "group_ban" ->
                             new Object[]{"群禁言", true, NoticeEvent.GroupNoticeEvent.GroupMemberBannedEvent.class};
                     case "group_card" ->
@@ -91,8 +104,6 @@ public class BotConnection extends WebSocketClient {
                             new Object[]{"群精华", true, NoticeEvent.GroupNoticeEvent.GroupMessageEssenceEvent.class};
                     case "friend_recall" ->
                             new Object[]{"私聊撤回", false, NoticeEvent.PrivateNoticeEvent.FriendMessageRecallEvent.class};
-                    case "private_upload" ->
-                            new Object[]{"私聊文件上传", false, NoticeEvent.PrivateNoticeEvent.PrivateFileUploadEvent.class};
                     case "friend_add" ->
                             new Object[]{"好友添加", false, NoticeEvent.PrivateNoticeEvent.FriendAddEvent.class};
                     default ->
@@ -120,7 +131,23 @@ public class BotConnection extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
+        ConnectionManager.getInstance().unregister(uuid);
         System.err.println("Close!" + code + ":" + reason);
+        if (isRetry()) {
+            try {
+                ConnectionManager.getInstance().register(getURI().toString(),uuid);
+                System.out.println("reconnect success");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public BotConnection directNewestConnection() {
+        if (ConnectionManager.getInstance().get(getUuid()) == null) {
+            throw new IllegalArgumentException("the connect was closed");
+        }
+        return ConnectionManager.getInstance().get(getUuid());
     }
 
     @Override

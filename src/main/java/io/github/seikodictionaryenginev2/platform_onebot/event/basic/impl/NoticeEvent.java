@@ -2,8 +2,6 @@ package io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.BasicEvent;
-import io.github.seikodictionaryenginev2.platform_onebot.bean.RemoteFile;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,20 +48,6 @@ public class NoticeEvent extends BasicEvent {
             public void setNotice_type(String notice_type) {
                 super.setNotice_type(notice_type);
                 assertRightNoticeType("friend_recall");
-            }
-        }
-
-        //私聊文件上传事件
-        @EqualsAndHashCode(callSuper = true)
-        @Getter
-        @Setter
-        public static class PrivateFileUploadEvent extends PrivateNoticeEvent {
-            private RemoteFile private_file;
-
-            @Override
-            public void setNotice_type(String notice_type) {
-                super.setNotice_type(notice_type);
-                assertRightNoticeType("private_upload");
             }
         }
     }
@@ -193,20 +177,6 @@ public class NoticeEvent extends BasicEvent {
                 assertRightNoticeType("group_decrease");
             }
             //sub_type	string	leave、kick、kick_me	事件子类型，分别表示主动退群、成员被踢、登录号被踢
-        }
-
-        //群成员文件上传事件
-        @EqualsAndHashCode(callSuper = true)
-        @Getter
-        @Setter
-        public static class GroupFileUploadEvent extends GroupNoticeEvent {
-            private RemoteFile file;
-
-            @Override
-            public void setNotice_type(String notice_type) {
-                super.setNotice_type(notice_type);
-                assertRightNoticeType("group_upload");
-            }
         }
 
         //管理员改动事件

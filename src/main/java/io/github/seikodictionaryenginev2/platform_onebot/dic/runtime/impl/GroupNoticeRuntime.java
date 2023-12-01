@@ -8,6 +8,9 @@ import io.github.seikodictionaryenginev2.platform_onebot.connect.BotConnection;
 import io.github.seikodictionaryenginev2.platform_onebot.dic.runtime.OneBotNoticeRuntime;
 import io.github.seikodictionaryenginev2.platform_onebot.event.basic.impl.NoticeEvent;
 import io.github.seikodictionaryenginev2.platform_onebot.message.MessageList;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @Description

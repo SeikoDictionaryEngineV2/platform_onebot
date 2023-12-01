@@ -34,4 +34,12 @@ class MessageEventTest {
 
         System.out.println(ev.getMessage().contentToString());
     }
+
+    @Test
+    void testFileMessage() {
+        EventSource s = new EventSource("{\"time\":1701406702,\"self_id\":485184047,\"post_type\":\"message\",\"message_type\":\"group\",\"sub_type\":\"normal\",\"message_id\":699349934,\"group_id\":914085636,\"peer_id\":485184047,\"user_id\":2207540782,\"message\":[{\"data\":{\"sub\":\"\",\"biz\":102,\"size\":6952,\"expire\":0,\"name\":\"SkipMap.kt\",\"id\":\"/12f02b10-ed2e-41c2-b9e2-3369a0ff0fdb\",\"url\":\"https://122.97.71.253/ftn_handler/a4c0672c97e10be12fc557e2b6c1cfacbc26ba5c7a8238fdcf1f1177603ba464d6b7a8dcccb11eb73a73016a33c072862b6180983638b7c238fca7e8ef643e69/?fname=/12f02b10-ed2e-41c2-b9e2-3369a0ff0fdb&client_proto=qq&client_appid=537180568&client_type=android&client_ver=8.9.85&client_down_type=auto&client_aio_type=unk\"},\"type\":\"file\"}],\"raw_message\":\"[CQ:file,sub=,biz=102,size=6952,expire=0,name=SkipMap.kt,id=/12f02b10-ed2e-41c2-b9e2-3369a0ff0fdb,url=https://122.97.71.251/ftn_handler/93c74b86e43c0d1c12fcd3864b27fe40f9f55060943e66d9d7af143e7d1dbe7e1a222a8b9433f93b67f4c89037ac9a0f3f465ebff835827bd34b1b11ebc06ebc/?fname=/12f02b10-ed2e-41c2-b9e2-3369a0ff0fdb&amp;client_proto=qq&amp;client_appid=537180568&amp;client_type=android&amp;client_ver=8.9.85&amp;client_down_type=auto&amp;client_aio_type=unk]\",\"font\":0,\"sender\":{\"user_id\":2207540782,\"nickname\":\"看到我叫我补化学基础，考太烂了\",\"card\":\"看到我叫我补化学基础，考太烂了\",\"role\":\"member\",\"title\":\"\",\"level\":\"\"}}\n");
+        MessageEvent.GroupMessageEvent ev = s.transfer(MessageEvent.GroupMessageEvent.class);
+        System.out.println(ev.getMessage());
+        System.out.println(ev.getMessage().contentToString());
+    }
 }
