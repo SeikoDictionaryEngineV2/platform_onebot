@@ -17,28 +17,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class OneBotNoticeRuntime<Event extends NoticeEvent, Contact> extends BasicRuntime<Event, Contact, MessageList> {
-    private final BotConnection conn;
+public abstract class OneBotNoticeRuntime<Event extends NoticeEvent, Contact> extends OneBotRuntime<Event, Contact> {
 
     public OneBotNoticeRuntime(DictionaryFile file, Event event, BotConnection conn) {
-        super(file, event);
-        this.conn = conn;
-    }
-
-    @Override
-    protected void initObject(String command, Event event) {
-        super.initObject(command, event);
-        getRuntimeObject().put("上下文", JSON.parseObject(event.toString()));
-        getRuntimeObject().put("BOT",event.getSelf_id());
-    }
-
-    @Override
-    protected MessageList initMessageCache() {
-        return new MessageList();
-    }
-
-    @Override
-    protected void appendMessage(String str) {
-        getMessageCache().add(new SingleMessage.PlainText(str));
+        super(file, event,conn);
     }
 }

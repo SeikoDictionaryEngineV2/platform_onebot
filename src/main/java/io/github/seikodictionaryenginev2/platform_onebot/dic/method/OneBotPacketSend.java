@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 发包，格式为:$OneBot发包 api字段 传的值(可选)，返回特定的集合结构$
- *
+ * 发包，格式为:
+ * $OneBot发包 api字段 传的值(可选)$
+ * 返回特定的集合结构$
  * @Description
  * @Author kagg886
  * @Date 2023/11/27 下午10:35
